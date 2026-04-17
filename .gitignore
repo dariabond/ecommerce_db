@@ -1,0 +1,15 @@
+.env
+
+postgres_data/
+
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+session_notes/
+
+.vscode/
+.idea/
+
+notes.txt
