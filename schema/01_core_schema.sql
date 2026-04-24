@@ -7,8 +7,15 @@ create table if not exists users (
 	phone_num text not null,
 	created_at timestamp not null,
 	birth_year text not null,
-	status text not null,
-	valid_until timestamp not null
+	status text not null
+);
+
+
+drop table if exists categories cascade;
+create table if not exists categories (
+    id serial primary key,
+    name varchar(50) not null,
+    description text
 );
 
 
@@ -16,13 +23,12 @@ create table if not exists users (
 drop table if exists products cascade;
 create table if not exists products (
     id serial primary key,
+    category_id integer not null references categories(id) on delete cascade,
     price decimal(10, 2) not null,
     name varchar(50) not null,
     description text,
-    stock_quantity integer not null default 0,
-    category varchar(50) not null
+    stock_quantity integer not null default 0
 );
-
 
 drop table if exists orders cascade;
 create table if not exists orders (
