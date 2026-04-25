@@ -1,4 +1,4 @@
---Insert into users
+--5600 users
 insert into users(first_name, last_name, email, phone_num, created_at, birth_year, status)
 with names as (
 	select 
@@ -31,7 +31,7 @@ cross join unnest(first_names) as fn
 cross join unnest(last_names) as ln
 order by random();
 
---Insert into users
+--Categories
 insert into categories(name, description)
 with names as (
      select array[
@@ -53,3 +53,18 @@ select
 from names 
 cross join unnest(categories) with ordinality as t(category, idx);
 
+
+--Products 
+insert into products(category_id, price, name, description, stock_quantity)
+select 
+     c.id as category_id,
+     1000 as price,
+     'product_' || s as name,
+     'product_description_' || s as description,
+     100 as stock_quantity
+from categories c cross join lateral (
+     select generate_series(
+          1,
+          floor(random() * (15000 - 5000 + 1) + 5000)::int
+     ) as s
+) t;
