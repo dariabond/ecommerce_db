@@ -59,12 +59,14 @@ insert into products(category_id, price, name, description, stock_quantity)
 select 
      c.id as category_id,
      1000 as price,
-     'product_' || s as name,
+     'product_' || s || '_' || c.id as name,
      'product_description_' || s as description,
      100 as stock_quantity
-from categories c cross join lateral (
-     select generate_series(
-          1,
-          floor(random() * (15000 - 5000 + 1) + 5000)::int
-     ) as s
+from categories c 
+cross join lateral (
+     select floor(random() * (15 - 5 + 1) + 5)::int as cnt
+     where c.id is not null
+) r
+cross join lateral (
+     select generate_series(1, r.cnt) as s
 ) t;
